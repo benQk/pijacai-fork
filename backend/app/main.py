@@ -1,6 +1,5 @@
 # — FastAPI aplikacija, usmerjevalniki, CORS in napake.
 import os
-import sys
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
