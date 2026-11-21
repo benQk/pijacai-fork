@@ -74,3 +74,37 @@ Osnovni potek: prejem surovin → proizvodni nalog → zagon šarže → zaklju�
 - [Uporabniške zgodbe](docs/05-uporabniske-zgodbe.md)
 - [Wireframes](docs/06-wireframes.md)
 - [Arhitekturne odločitve (ADR)](docs/adr/)
+
+## CI/CD
+
+![CI/CD](https://github.com/<uporabnik>/pijacai-fork/actions/workflows/ci-cd.yml/badge.svg)
+
+**Nameščena aplikacija:** [https://pijacai.vercel.app](https://pijacai.vercel.app)
+(frontend na Vercelu, backend in PostgreSQL na Renderju; API dokumentacija:
+[https://pijacai-fork.onrender.com/docs](https://pijacai-fork.onrender.com/docs))
+
+> Opomba: brezplačni Render strežnik po obdobju nedejavnosti zaspi, zato lahko
+> prvi zahtevek traja približno minuto.
+
+### Faze cevovoda
+
+Workflow `.github/workflows/ci-cd.yml` se sproži ob vsakem pull requestu v vejo
+`main` in ob vsakem pushu na `main`.
+
+1. **lint** – preveri slog in kakovost kode: ESLint za frontend in Ruff za backend.
+   Če linter najde napako, job pade.
+2. **build** – zgradi frontend (`npm run build`) in pripravi paket backenda.
+   Odvisnosti (npm, pip) se predpomnijo. Rezultata (`frontend/dist` in backend
+   paket) se shranita kot artefakta.
+3. **test** – zažene teste frontenda (Vitest) in backenda (pytest z
+   integracijskimi testi na PostgreSQL servisu). Poročila o pokritosti kode se
+   shranijo kot artefakt. Če katerikoli test pade, pade tudi cevovod.
+4. **deploy** – teče samo ob pushu na `main` in samo, če so uspešno zaključeni
+   jobi `lint`, `build` in `test`. Uporablja okolje `production` in artefakte
+   iz joba `build` (aplikacije ne gradi ponovno). Frontend se namesti na
+   Vercel, backend pa na Render prek deploy hooka. Skrivnosti so shranjene kot
+   GitHub Secrets okolja `production`.
+
+Veja `main` je zaščitena: spremembe se združujejo samo prek pull requestov,
+obvezne preverbe pa so `lint`, `build` in `test`. Pull requesta s padajočim
+cevovodom zato ni mogoče združiti.
