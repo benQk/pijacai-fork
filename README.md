@@ -77,7 +77,7 @@ Osnovni potek: prejem surovin → proizvodni nalog → zagon šarže → zaklju�
 
 ## CI/CD
 
-![CI/CD](https://github.com/<uporabnik>/pijacai-fork/actions/workflows/ci-cd.yml/badge.svg)
+![CI/CD](https://github.com/benQk/pijacai-fork/actions/workflows/ci-cd.yml/badge.svg)
 
 **Nameščena aplikacija:** [https://pijacai.vercel.app](https://pijacai.vercel.app)
 (frontend na Vercelu, backend in PostgreSQL na Renderju; API dokumentacija:
